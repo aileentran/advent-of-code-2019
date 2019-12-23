@@ -125,7 +125,11 @@ def fuel_requirements(lst):
 	total_fuel = 0
 
 	for mass in lst:
-		fuel = math.floor(mass/3) - 2
-		total_fuel += fuel
+		module_total = 0
+		module_fuel = 0
+		if module_fuel > 0:
+			module_fuel = math.floor(mass/3) - 2
+			module_total += module_fuel
+		
 
 	return total_fuel
