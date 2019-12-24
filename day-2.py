@@ -42,13 +42,12 @@ def intcode(code):
 	print("in", code)
 	for idx, num in enumerate(code):
 		if idx % 4 == 0:
-
-			if num == 99:
-				break
-
 			num1_idx = code[idx + 1]
 			num2_idx = code[idx + 2]
 			output_idx = code[idx + 3]
+
+			if num == 99:
+				break
 
 			if num == 1:
 				output = code[num1_idx] + code[num2_idx]
