@@ -1,3 +1,4 @@
+# PART 1
 # Fuel required to launch a given module is based on its mass. Specifically, to find the fuel required for a module, take its mass, divide by three, round down, and subtract 2.
 
 # For example:
@@ -16,6 +17,25 @@
 # need to find out how to round down: import math and use math.floor
 # divide mass by 3, math.floor results, subtract by 2
 # sum up stuff, so need an empty variable set to 0
+
+# PART 2
+
+# Fuel itself requires fuel just like a module - take its mass, divide by three, round down, and subtract 2. However, that fuel also requires fuel, and that fuel requires fuel, and so on. Any mass that would require negative fuel should instead be treated as if it requires zero fuel; the remaining mass, if any, is instead handled by wishing really hard, which has no mass and is outside the scope of this calculation.
+
+# So, for each module mass, calculate its fuel and add it to the total. Then, treat the fuel amount you just calculated as the input mass and repeat the process, continuing until a fuel requirement is zero or negative.
+
+# thoughts
+# input: list of modules (numbers)
+# output: one number 
+# still need to sum up stuff = empty variable set to 0
+
+# loop through list of modules
+# need another variable inside to sum up fuel for each module set to 0
+# maybe a variable to keep track of the current fuel num
+# if current fuel is > 0, continue with the calculations
+# else we just add it to the sum fuel and continue with the loop
+
+# return the fuel number 
 
 # input = 
 [99711,
@@ -125,11 +145,14 @@ def fuel_requirements(lst):
 	total_fuel = 0
 
 	for mass in lst:
-		module_total = 0
-		module_fuel = 0
-		if module_fuel > 0:
-			module_fuel = math.floor(mass/3) - 2
-			module_total += module_fuel
-		
+		current = math.floor(mass/3) - 2
+		module_total = current
+
+		while current > 0:
+			current = math.floor(current/3) - 2
+			if current > 0:
+				module_total += current
+
+		total_fuel += module_total
 
 	return total_fuel
