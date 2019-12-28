@@ -1,3 +1,5 @@
+import random
+
 # PART 1
 # input: list of integers
 # output integer at position 0
@@ -34,28 +36,79 @@ code = [1,0,0,3,1,1,2,3,1,3,4,3,1,5,0,3,2,9,1,19,1,19,5,23,1,23,6,27,2,9,27,31,1
 # outside loop
 # return list[0]
 
-# updating code
-code[1] = 12
-code[2] = 2
+# PART 2
+# instructions = 1, 2, 3, 4 
+# 1 = opcode (1, 2, 99)
+# 2, 3, 4, = parameters (99 does not have parameters)
+
+# which pair of inputs output 19690720
+# oh! a position in memory is also called an address (idx?)
+# noun = address 1; verb = address 2
+# each two inputs are between 0 - 99 inclusive 
+# need to reset/use clean inputs w/out manipulation 
+
+# OH!! input = like.. addresses at idx 1 and 2 (noun, verb)
+# inputs between 0 - 99 inclusive 
+# which pair will produce output of 19690720
+
+# hmm.. some sort of binary search algorithm? 
+# noun 0 - 49, verb between 50 - 99
+# if output is too big, bring verb down into 0 - 49
+# if output too small, bring noun to 50 - 99
+# reset the list to original 
+# have an empty list storing what we've seen so we don't have repeats
+
+# after find noun and verb
+# what is 100 * noun + verb??
+
+
 
 def intcode(code):
-	print("in", code)
-	for idx, num in enumerate(code):
-		if idx % 4 == 0:
-			num1_idx = code[idx + 1]
-			num2_idx = code[idx + 2]
-			output_idx = code[idx + 3]
+	# updating code
+	# seen numbers
+	working_code = code
+	seen = []
+	noun = working_code[1] 
+	verb = working_code[2]
+	
+	print('noun', noun)
+	print('verb', verb)
+	final_output = working_code[0]
 
-			if num == 99:
-				break
+	while final_output < 19690720:
+		# resetting the input to original code
+		working_code = code
+		if noun not in seen:
+			noun = random.randint(0, 49)
+			seen.append(noun)
+			working_code[1] = noun
 
-			if num == 1:
-				output = code[num1_idx] + code[num2_idx]
+		if verb not in seen:
+			verb = random.randint(50, 99)
+			seen.append(verb)
+			working_code[2] = verb
 
-			if num == 2:
-				output = code[num1_idx] * code[num2_idx]
+		print('seen', seen)
 
-			code[output_idx] = output
+		print("in", working_code)
+		for idx, num in enumerate(working_code):
+			if idx % 4 == 0:
+				num1_idx = working_code[idx + 1]
+				num2_idx = working_code[idx + 2]
+				output_idx = working_code[idx + 3]
 
-	print("out", code)
-	return code[0]
+				if num == 99:
+					break
+
+				if num == 1:
+					output = working_code[num1_idx] + working_code[num2_idx]
+
+				if num == 2:
+					output = working_code[num1_idx] * working_code[num2_idx]
+
+				working_code[output_idx] = output
+				print('output_idx', output_idx)
+				print('output', output)
+
+	print("out", working_code)
+	return working_code[0]
